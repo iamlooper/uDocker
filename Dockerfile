@@ -10,8 +10,8 @@ ENV PIP_NO_CACHE_DIR=1 \
 # Setup essentials
 RUN bash -c "$(curl -fsSL https://raw.githubusercontent.com/iamlooper/Docker/main/setup.sh)"
 
-# Expose port
-EXPOSE 8080
+# Expose ports
+EXPOSE 8000 8080
 
 # Start command
 CMD bash -c "$(curl -fsSL https://raw.githubusercontent.com/iamlooper/Docker/main/start.sh)"
