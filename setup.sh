@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Build essentials
+# Build essentials.
 sed -i.bak 's/us-west-2\.ec2\.//' /etc/apt/sources.list
 apt -qq update
 apt -qq upgrade -y
@@ -21,7 +21,7 @@ apt -qq install -y --no-install-recommends \
   p7zip-full \
   libfreetype6-dev libjpeg-dev libpng-dev libgif-dev libwebp-dev
 
-# Chrome drivers
+# Chrome and chrome driver.
 mkdir -p /tmp/ && cd /tmp/
 wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 dpkg -i ./google-chrome-stable_current_amd64.deb
@@ -31,6 +31,6 @@ unzip chromedriver_linux64.zip chromedriver -d /usr/bin/
 rm -rf chromedriver_linux64.zip && rm -rf google-chrome-stable_current_amd64.deb
 rm -rf /var/lib/apt/lists /var/cache/apt/archives /tmp/*
 
-# PIP
+# PIP and setuptools.
 pip install --upgrade pip
 pip install --upgrade setuptools
