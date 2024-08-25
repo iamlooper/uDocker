@@ -1,36 +1,32 @@
 #!/bin/bash
 
-# Build essentials.
-sed -i.bak 's/us-west-2\.ec2\.//' /etc/apt/sources.list
-apt -qq update
-apt -qq upgrade -y
-apt -qq install -y --no-install-recommends \
-  apt-utils apt-transport-https \
-  curl \
-  git \
-  gnupg2 \
-  wget \
-  unzip \
-  tree \
-  gcc g++ g++-multilib gcc-multilib clang cmake \
-  python3-dev \ 
-  zlib1g-dev \
-  build-essential coreutils jq pv \
-  ffmpeg mediainfo \
-  neofetch \
-  p7zip-full \
-  libfreetype6-dev libjpeg-dev libpng-dev libgif-dev libwebp-dev
+# Update and upgrade the system
+apt update && apt upgrade -y
 
-# Chrome and chrome driver.
-mkdir -p /tmp/ && cd /tmp/
-wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-dpkg -i ./google-chrome-stable_current_amd64.deb
-apt -fqqy install
-wget -q http://chromedriver.storage.googleapis.com/$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip
-unzip chromedriver_linux64.zip chromedriver -d /usr/bin/
-rm -rf chromedriver_linux64.zip && rm -rf google-chrome-stable_current_amd64.deb
-rm -rf /var/lib/apt/lists /var/cache/apt/archives /tmp/*
+# Install essential tools
+apt install -y \
+    git \
+    curl \
+    wget \
+    unzip \
+    tar \
+    build-essential \
+    software-properties-common \
+    apt-transport-https \
+    ca-certificates \
+    gnupg \
+    lsb-release
 
-# PIP and setuptools.
-pip install --upgrade pip
-pip install --upgrade setuptools
+# Install Python and pip
+apt install -y python3-full python3-pip
+ln -s /usr/bin/python3 /usr/bin/python
+
+# Configure pip to allow installation in the system environment
+mkdir -p ~/.config/pip
+echo "[global]" > ~/.config/pip/pip.conf
+echo "break-system-packages = true" >> ~/.config/pip/pip.conf
+
+# Clean up
+apt autoremove -y
+apt clean
+rm -rf /var/lib/apt/lists/*

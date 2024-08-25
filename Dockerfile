@@ -1,16 +1,25 @@
-FROM python:3.12.0
+# Use Ubuntu as the base image for broad compatibility
+FROM ubuntu:latest
 
-# Environmental variables.
-ENV LANG=C.UTF-8 \
-    DEBIAN_FRONTEND=noninteractive \
-    GOOGLE_CHROME_BIN=/usr/bin/google-chrome-stable \
-    GOOGLE_CHROME_DRIVER=/usr/bin/chromedriver
+# Environmental variables
+ENV DEBIAN_FRONTEND=noninteractive \
+    PIP_ROOT_USER_ACTION=ignore
 
-# Setup essentials.
-RUN bash -c "$(curl -fsSL https://raw.githubusercontent.com/iamlooper/Docker/main/setup.sh)"
+# Set the working directory
+WORKDIR /home
 
-# Expose ports.
-EXPOSE 80 8000 8080 443
+# Copy setup and start scripts
+COPY setup.sh /home/setup.sh
+COPY start.sh /home/start.sh
 
-# Start command.
-CMD bash -c "$(curl -fsSL https://raw.githubusercontent.com/iamlooper/Docker/main/start.sh)"
+# Make scripts executable
+RUN chmod +x /home/setup.sh /home/start.sh
+
+# Run setup script
+RUN /home/setup.sh
+
+# Expose all ports
+EXPOSE 1-65535
+
+# Set the entrypoint to the start script
+ENTRYPOINT ["/home/start.sh"]
