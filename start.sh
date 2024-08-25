@@ -1,18 +1,25 @@
 #!/bin/bash
 
-export PIP_ROOT_USER_ACTION=ignore
-
-# Remove the 'app' directory if it exists.
-if [ -d "app" ]; then
-  rm -rf app
+# Check if START_COMMAND is set
+if [ -z "$START_COMMAND" ]; then
+    echo "Error: START_COMMAND must be set"
+    exit 1
 fi
 
-# Clone the upstream repo.
-git clone -q "$UPSTREAM_REPO" app
-cd app
+# If GIT_REPO is set, clone the repository
+if [ -n "$GIT_REPO" ]; then
+    echo "Cloning repository: $GIT_REPO"
+    git clone "$GIT_REPO" /home/app
+    if [ $? -ne 0 ]; then
+        echo "Error: Failed to clone repository"
+        exit 1
+    fi
+    # Navigate to the cloned repository
+    cd /home/app
+else
+    echo "No GIT_REPO specified, using current directory"
+fi
 
-# Install requirements.
-pip install --no-cache-dir -r requirements.txt
-
-# Run exec command.
-bash -c "$EXEC_COMMAND"
+# Execute the start command
+echo "Executing: $START_COMMAND"
+eval "$START_COMMAND"
