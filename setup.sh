@@ -1,32 +1,32 @@
 #!/bin/bash
 
-# Update and upgrade the system
-apt update && apt upgrade -y
+# Update the system
+apk update && apk upgrade
 
 # Install essential tools
-apt install -y \
+apk add --no-cache \
     git \
     curl \
     wget \
     unzip \
     tar \
-    build-essential \
-    software-properties-common \
-    apt-transport-https \
+    build-base \
+    bash \
     ca-certificates \
     gnupg \
-    lsb-release
+    lsb-release \
+    python3 \
+    py3-pip
 
-# Install Python and pip
-apt install -y python3-full python3-pip
-ln -s /usr/bin/python3 /usr/bin/python
+# Create a symbolic link for python3 to python
+ln -sf /usr/bin/python3 /usr/bin/python
 
 # Configure pip to allow installation in the system environment
 mkdir -p ~/.config/pip
-echo "[global]" > ~/.config/pip/pip.conf
-echo "break-system-packages = true" >> ~/.config/pip/pip.conf
+cat <<EOF > ~/.config/pip/pip.conf
+[global]
+break-system-packages = true
+EOF
 
-# Clean up
-apt autoremove -y
-apt clean
-rm -rf /var/lib/apt/lists/*
+# Clean up APK cache to reduce image size
+rm -rf /var/cache/apk/*

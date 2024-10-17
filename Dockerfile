@@ -1,9 +1,11 @@
-# Use Ubuntu as the base image for broad compatibility
-FROM ubuntu:latest
+# Use Alpine as the base image for a lightweight and secure environment
+FROM alpine:latest
 
-# Environmental variables
-ENV DEBIAN_FRONTEND=noninteractive \
-    PIP_ROOT_USER_ACTION=ignore
+# Set environment variables
+ENV PIP_ROOT_USER_ACTION=ignore
+
+# Install glibc compatibility layer and bash beforehand
+RUN apk update && apk add --no-cache gcompat bash
 
 # Set the working directory
 WORKDIR /home
@@ -18,8 +20,8 @@ RUN chmod +x /home/setup.sh /home/start.sh
 # Run setup script
 RUN /home/setup.sh
 
-# Expose all ports
-EXPOSE 1-65535
+# Expose ports
+EXPOSE 80 443 8000 8443 9000 9443
 
 # Set the entrypoint to the start script
 ENTRYPOINT ["/home/start.sh"]
