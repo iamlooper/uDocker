@@ -3,7 +3,7 @@
 # Update the system
 apk update && apk upgrade
 
-# Install essential tools
+# Install essential tools and dependencies
 apk add --no-cache \
     git \
     curl \
@@ -11,12 +11,14 @@ apk add --no-cache \
     unzip \
     tar \
     build-base \
-    bash \
     ca-certificates \
     gnupg \
     lsb-release \
     python3 \
-    py3-pip
+    py3-pip \
+    python3-dev \
+    gcc \
+    musl-dev
 
 # Create a symbolic link for python3 to python
 ln -sf /usr/bin/python3 /usr/bin/python
