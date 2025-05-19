@@ -1,11 +1,8 @@
-# Use Alpine as the base image for a lightweight and secure environment
-FROM alpine:latest
+# Use Debian as the base image for a lightweight and secure environment
+FROM debian:bookworm-slim
 
 # Set environment variables
 ENV PIP_ROOT_USER_ACTION=ignore
-
-# Install glibc compatibility layer and bash beforehand
-RUN apk update && apk add --no-cache gcompat bash
 
 # Set the working directory
 WORKDIR /home

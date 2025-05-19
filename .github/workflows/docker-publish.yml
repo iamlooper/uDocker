@@ -7,11 +7,11 @@ name: Docker
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "debian" ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "debian" ]
   workflow_dispatch:
 
 env:

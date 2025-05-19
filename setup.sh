@@ -1,27 +1,24 @@
 #!/bin/bash
 
 # Update the system
-apk update && apk upgrade
+apt-get update && apt-get upgrade -y
 
 # Install essential tools and dependencies
-apk add --no-cache \
+apt-get install -y --no-install-recommends \
     git \
     curl \
     wget \
     unzip \
     tar \
-    build-base \
+    build-essential \
     ca-certificates \
     gnupg \
     lsb-release \
     python3 \
-    py3-pip \
+    python3-pip \
     python3-dev \
-    gcc \
-    musl-dev
-
-# Create a symbolic link for python3 to python
-ln -sf /usr/bin/python3 /usr/bin/python
+    python-is-python3 \
+    gcc
 
 # Configure pip to allow installation in the system environment
 mkdir -p ~/.config/pip
@@ -30,5 +27,5 @@ cat <<EOF > ~/.config/pip/pip.conf
 break-system-packages = true
 EOF
 
-# Clean up APK cache to reduce image size
-rm -rf /var/cache/apk/*
+# Clean up APT cache to reduce image size
+rm -rf /var/lib/apt/lists/*
